@@ -1,5 +1,7 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <cstdint>
+#include <bitset>
+
 uint8_t get8b(uint32_t n, int shift, int nbits) {
 	return (n >> shift) & ((1<<nbits)-1);
 }
@@ -17,11 +19,11 @@ void opcode13(uint32_t instruction) {
 	switch (funct3) {
 		case 0:
 			imm = get16b(instruction, 20, 12);
-			cout << "addi x" << (int)rd << ", x" << (int)rs1 << ", " << imm << "\n";
+			std::cout << "addi x" << (int)rd << ", x" << (int)rs1 << ", " << imm << "\n";
 			break;
 		
 		default:
-			cerr << "Unknown funct3 " << funct3 << "\n";
+			std::cerr << "Unknown funct3 " << funct3 << "\n";
 	}
 }
 int main() {
@@ -49,7 +51,7 @@ int main() {
 				opcode13(instruction);
 				break;
 			default:
-				cerr << "Unknown opcode " << std::bitset<7>(opcode) << "\n";
+				std::cerr << "Unknown opcode " << std::bitset<7>(opcode) << "\n";
 		}
 
 		i += 4;
