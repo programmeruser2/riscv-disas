@@ -24,24 +24,32 @@ void opcode13(uint32_t instruction) {
 	uint8_t rs1 = get8b(instruction, 15, 5);
 	uint16_t imm;
 	switch (funct3) {
-		case 0:
+		case 0x0:
+			// addi
 			imm = get16b(instruction, 20, 12);
-			std::cout << "addi x" << (int)rd << ", x" << (int)rs1 << ", " << twoscomp_to_int(imm, 12) << "\n";
+			std::cout << "addi x" << (int) rd << ", x" << (int) rs1 << ", " << twoscomp_to_int(imm, 12) << "\n";
 			break;
-		
+		case 0x4:
+			// xori
+			imm = get16b(instruction, 20, 12);
+			std::cout << "xori x"<< (int) rd << ", x" << (int) rs1 << ", " << imm << "\n";
+			break;
 		default:
 			std::cerr << "Unknown funct3 " << funct3 << "\n";
 	}
 }
 int main() {
 	uint8_t code[] = { 
-		0x93, 0x02, 0x80, 0x3e,
-		0x13, 0x81, 0x00, 0x7d,
-		0x93, 0x01, 0x81, 0xc1,
-		0x13, 0x82, 0x01, 0x83,
-		0x93, 0x02, 0x82, 0x3e
+		0x93, 0x02, 0x80, 0x3e, // addi x1, x0, 1000
+		0x13, 0x81, 0x00, 0x7d, // addi x2, x1, 2000
+		0x93, 0x01, 0x81, 0xc1, // addi x3, x2, -1000
+		0x13, 0x82, 0x01, 0x83, // addi x4, x3, -2000
+		0x93, 0x02, 0x82, 0x3e, // addi x5, x4, 1000
+
+		0x13, 0xc1, 0x60, 0x4d, // xori x2, x1, 1238
 	};
-	int size = 20;
+	// int size = 24;
+	int size = sizeof(code);
 	int i = 0;
 	while (i+4 <= size) {
 		uint32_t instruction = code[i] 
@@ -60,7 +68,6 @@ int main() {
 			default:
 				std::cerr << "Unknown opcode " << std::bitset<7>(opcode) << "\n";
 		}
-
 		i += 4;
 	}
 }
