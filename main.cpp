@@ -2,12 +2,12 @@
 #include <cstdint>
 #include <bitset>
 int16_t twoscomp_to_int(uint16_t n, int size) {
-  uint16_t msb = n & (1<<(size-1)); // most significant bit (sign bit in two's complement)
-  if (msb == 0) {
-    return n;
-  } else {
-    return -(((~n) & ((1<<size)-1)) + 1);
-  }
+	uint16_t msb = n & (1<<(size-1)); // most significant bit (sign bit in two's complement)
+	if (msb == 0) {
+		return n;
+	} else {
+		return -(((~n) & ((1<<size)-1)) + 1);
+	}
 }
 uint8_t get8b(uint32_t n, int shift, int nbits) {
 	return (n >> shift) & ((1<<nbits)-1);
